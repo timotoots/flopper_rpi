@@ -52,6 +52,22 @@ var current_uid = "";
 
       current_uid = trim(data.substr(9));   
 
+   } else if(data.substr(0, 20)=="Button pressed: NEXT"){
+      buttonPressed("next");
+   } else if(data.substr(0, 20)=="Button pressed: PREV"){
+      buttonPressed("prev");
+   } else if(data.substr(0, 20)=="Button pressed: RANDOM"){
+      buttonPressed("random");
+   } else if(data.substr(0, 20)=="Button pressed: PAUSE"){
+      buttonPressed("random");
+   } else if(data.substr(0, 20)=="Button pressed: REC"){
+      buttonPressed("rec");
+   } else if(data.substr(0, 20)=="Button pressed: LIKE"){
+      buttonPressed("like");
+   } else if(data.substr(0, 20)=="Volume changed:"){
+
+        var new_vol = trim(data.substr(15));   
+        changeVolume(new_vol);
    } 
    
 
@@ -89,7 +105,51 @@ function trim(str){
 
 }
 
+function changeVolume(vol){
 
+  console.log("Change volume" + vol);
+
+
+}
+
+function buttonPressed(buttonId){
+
+  console.log("Button pressed:" + buttonId);
+
+  if(buttonId=="prev"){
+
+    if(playlists.length>1 && current_track-1 < 0){
+      current_track--;
+      checkPlayer();
+    }
+
+  } else if(buttonId=="next"){
+
+    if(playlists.length>1 && current_track+1 <= playlists.length-1){
+      current_track++;
+      checkPlayer();
+    }
+
+  } else if(buttonId=="random"){
+
+    if(playlists.length>1){
+      current_track = Math.floor(Math.random() * playlists.length);
+      checkPlayer();
+    }
+
+
+  } else if(buttonId=="pause"){
+
+
+  } else if(buttonId=="rec"){
+
+  } else if(buttonId=="like"){
+    play_soundfile("/opt/flopper_rpi/sounds/like.mp3");
+
+  } 
+
+
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -113,6 +173,9 @@ function play_soundfile(file){
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+var current_track = 0;
+
 
 var playlists = [];
 
