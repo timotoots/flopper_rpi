@@ -114,13 +114,18 @@ function trim(str){
 
 }
 
+var last_volume = 0;
+
+  const execSync = require('child_process').execSync;
+  var code = execSync("amixer sset 'PCM' 100%");
+  
 function changeVolume(vol){
 
   console.log("Change volume: " + vol);
 
 
-  const execSync = require('child_process').execSync;
-  var code = execSync("amixer sset 'PCM' "+vol+"%");
+
+  // play_soundfile("/opt/flopper_rpi/sounds/vol.wav");
 
 
 }
@@ -199,6 +204,9 @@ function buttonPressed(buttonId){
       buttonAccept.rec = 1;
     },3000);
 
+    play_soundfile("/opt/flopper_rpi/sounds/rec.wav");
+
+
   } else if(buttonId=="like" && buttonAccept.like){
 
     console.log("Button pressed:" + buttonId);
@@ -276,12 +284,19 @@ function controlOmx(cmd, params = ""){
 
     request.post({url:'http://localhost:4321/index.php/index', form: {action:'shortcut',shortcut:'p'}}, function(err,httpResponse,body){ console.log("OMX Player pause!"); })
     
-  } else if(cmd == "play"){
+  } else if(cmd == "volume_up"){
+
+    request.post({url:'http://localhost:4321/index.php/index', form: {action:'shortcut',shortcut:'+'}}, function(err,httpResponse,body){ console.log("OMX Player pause!"); })
+    
+  } else if(cmd == "volume_down"){
+
+    request.post({url:'http://localhost:4321/index.php/index', form: {action:'shortcut',shortcut:'-'}}, function(err,httpResponse,body){ console.log("OMX Player pause!"); })
+    
+  }  else if(cmd == "play"){
 
     request.post({url:'http://localhost:4321/index.php/index', form: {action:'shortcut',shortcut:'start',path:params}}, function(err,httpResponse,body){ console.log("OMX Player play: "); console.log(body) })
 
-
-  }
+  } 
 
 }
 
@@ -362,14 +377,33 @@ function ParseUrl(url, playlist_start = 1, playlist_end=2){
     // var url_type = url.indexOf("file://");
 
 
-    if(url=="https://vikerraadio.err.ee/"){
+    if(url=="http://flopper.net/f/vikerraadio/"){
        url = "http://icecast.err.ee/vikerraadio.mp3.m3u";
-    } else if(url=="http://www.radiorethink.com/tuner/?stationCode=wfmugtd&stream=hi"){
+
+    } else if(url=="http://flopper.net/wfmu/drummerlive"){
       url  = "http://stream0.wfmu.org/drummer";
-    } else if(url == "http://www.radiorethink.com/tuner/?stationCode=wfmu&stream=hi"){
+
+    } else if(url=="http://flopper.net/wfmu/ZO"){
+      url  = "https://s3.amazonaws.com/arch.wfmu.org/ZO/zo190107.mp4";
+
+    } else if(url=="http://flopper.net/wfmu/SS"){
+      url  = "https://s3.amazonaws.com/arch.wfmu.org/SS/ss190111.mp4";
+
+    } else if(url=="http://flopper.net/wfmu/DN"){
+      url  = "https://s3.amazonaws.com/arch.wfmu.org/DN/dn181228.mp4";
+
+    } else if(url == "http://flopper.net/wfmu/live"){
       url = "http://stream0.wfmu.org/freeform-high.aac";
-             url = "https://www.youtube.com/playlist?list=PLTkaXIuco-GPASgIwr00ALMth7UrjwD0i";
-       url = "https://soundcloud.com/tantsusaabas/tracks";
+       //       url = "https://www.youtube.com/playlist?list=PLTkaXIuco-GPASgIwr00ALMth7UrjwD0i";
+       // url = "https://soundcloud.com/tantsusaabas/tracks";
+
+    } else if(url == "http://flopper.net/f/klassikaraadio/"){
+      url = "http://icecast.err.ee/klassikaraadio.mp3.m3u";
+
+    } else if(url == "https://idaidaida.ee/"){
+      url = "https://streams.radio.co/s053b51423/listen";
+    } else if(url=="http://flopper.net/f/ohtujutt/"){
+
     }
     
 
