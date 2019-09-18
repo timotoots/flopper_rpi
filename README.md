@@ -1,7 +1,7 @@
-# flopper_rpi
-Raspberry Pi player for Flopper Drive
+# Linki Raspberry Pi
+Prototype for Raspberry Pi software for Linki Players
 
-
+For self-documentation
 
 * Install OMX Web interface
 
